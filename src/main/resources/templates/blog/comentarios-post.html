@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comentar</title>
+
+  <link rel="shortcut icon" href="img/instagram.ico" type="image/x-icon">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+          crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+  <link rel="stylesheet" href="/styleBlog.css">
+
+</head>
+
+<body>
+
+<div th:replace="blog/layout-base::navbar"></div>
+
+<div class="container mt-5 post-container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+
+
+      <div class="d-flex justify-content-start align-items-center mb-3">
+        <img th:src="@{${post.usuario.imagemPerfil}}"
+             class="mr-3 rounded-circle avatar" alt="Avatar">
+        <h3 class="mb-4 ml-3" th:text="${post.usuario.nick}"></h3>
+      </div>
+
+      <h2 class="mb-4" th:text="${post.titulo}"></h2>
+      <p th:text="${post.conteudo}"></p>
+      <img th:src="@{${post.imagemUrl}}" alt="Imagem do Post"
+           class="img-fluid mb-4 post">
+      <p class="text-muted" th:text="${post.data}"></p>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md-8 offset-md-2">
+      <h3>Comentários</h3>
+
+      <div class="media mt-4" th:each="comentario : ${post.comentarios}">
+        <div class="d-flex justify-content-start align-items-center">
+          <img th:src="@{${comentario.usuario.imagemPerfil}}"
+               class="mr-3 rounded-circle avatar" alt="Avatar">
+          <h5 class="mt-0" th:text="${comentario.usuario.nick}"></h5>
+        </div>
+        <div class="media-body">
+          <p th:text="${comentario.texto}"></p>
+        </div>
+      </div>
+
+
+      <!-- Formulário de Comentário -->
+      <h3 class="mt-3">Deixe um Comentário</h3>
+      <form th:action="@{/comentar/{idPost}(idPost = ${post.id})}" method="post" th:object="${comentario}">
+        <div class="form-group mb-3">
+          <textarea class="form-control" id="comentario" rows="4" placeholder="Seu Comentário" th:field="*{texto}"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar Comentário</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+
+</html>
